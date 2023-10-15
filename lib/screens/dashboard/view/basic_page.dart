@@ -1,7 +1,6 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 
-import '../../chat_app/home_page.dart';
 
 class BasicApp extends StatelessWidget {
   const BasicApp({
@@ -16,7 +15,7 @@ class BasicApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: const ChatHomePage(),
+      home: const Home(),
     );
   }
 }
