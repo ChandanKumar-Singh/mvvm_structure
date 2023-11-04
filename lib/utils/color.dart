@@ -7,10 +7,26 @@ import 'sized_utils.dart';
 // Light Mode Colors
 // const Color lightPrimary = Color.fromARGB(255, 13, 209, 137); // Primary color
 // const Color lightAccent = Color.fromARGB(255, 27, 101, 74); // Accent color
-const Color lightPrimary = Color.fromARGB(255, 12, 31, 206); // Primary color
-const Color lightAccent = Color.fromARGB(255, 26, 30, 100); // Accent color
-const Color lightBackground = Colors.white; // Background color
-const Color lightText = Colors.black; // Text color
+
+const kPrimaryColor = Color(0xFF272841);
+const kPrimaryColor2 = Color(0xFF403f74);
+const kPrimaryColor3 = Color(0xFF6C6C9A);
+const kPrimaryColor4 = Color(0xFF8D8FB8);
+const kPrimaryColor5 = Color(0xFFFF4EC0);
+const kPrimaryColor6 = Color(0xFFFF5DA3);
+const kPrimaryColor7 = Color(0xFF86ADff);
+const kPrimaryColor8 = Color(0xFF7104f8);
+const kPrimaryColor9 = Color(0xFFB72DF7);
+const kPrimaryColor10 = Color(0xFFfc5f00);
+const kPrimaryColor11 = Color(0xFFca5000);
+const kSecondaryColor = Color(0xFF3F4158);
+const kSecondaryColor2 = Color(0xFFD9D3D9);
+const kSecondaryColor3 = Color(0xFFD9D9E4);
+const kSecondaryColor4 = Color(0xFF3f4058);
+const Color lightPrimary = Color(0xFF403f74); // Primary color
+const Color lightAccent = kPrimaryColor; // Accent color
+const Color lightBackground = Color(0xFF6C6C9A); // Background color
+const Color lightText = Color(0xFF8D8FB8); // Text color
 
 // Dark Mode Colors
 // const Color darkPrimary = Color.fromARGB(255, 12, 31, 206); // Primary color
@@ -137,28 +153,28 @@ Color generateRandomLightColor() {
   return Color.fromARGB(255, red, green, blue);
 }
 
-LinearGradient globalPageGradient() {
+LinearGradient globalPageGradient1() {
   return LinearGradient(
       colors: [
-        getTheme.colorScheme.primary.withOpacity(.1),
-        getTheme.colorScheme.primary.withOpacity(0.2),
-        getTheme.colorScheme.primary.withOpacity(0.3),
-        getTheme.colorScheme.primary.withOpacity(0.4),
-        getTheme.colorScheme.primary.withOpacity(0.6),
-        getTheme.colorScheme.primary.withOpacity(0.5),
-        getTheme.colorScheme.primary.withOpacity(0.4),
-        getTheme.colorScheme.primary.withOpacity(0.3),
-        getTheme.colorScheme.primary.withOpacity(0.2),
-        getTheme.colorScheme.primary.withOpacity(0.1),
+        getTheme().colorScheme.primary.withOpacity(.1),
+        getTheme().colorScheme.primary.withOpacity(0.2),
+        getTheme().colorScheme.primary.withOpacity(0.3),
+        getTheme().colorScheme.primary.withOpacity(0.4),
+        getTheme().colorScheme.primary.withOpacity(0.6),
+        getTheme().colorScheme.primary.withOpacity(0.5),
+        getTheme().colorScheme.primary.withOpacity(0.4),
+        getTheme().colorScheme.primary.withOpacity(0.3),
+        getTheme().colorScheme.primary.withOpacity(0.2),
+        getTheme().colorScheme.primary.withOpacity(0.1),
       ].reversed.toList(),
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter);
 }
 
 buildAppbarGradient({List<Color>? colors}) {
-  // Color color = getTheme.colorScheme.primary;
-  // Color color2 = getTheme.colorScheme.secondary;
-  bool isDark = getTheme.brightness == Brightness.dark;
+  // Color color = getTheme().colorScheme.primary;
+  // Color color2 = getTheme().colorScheme.secondary;
+  bool isDark = getTheme().brightness == Brightness.dark;
 
   Color color1 = isDark ? darkPrimary : lightPrimary;
   Color color2 = isDark ? darkAccent : lightAccent;

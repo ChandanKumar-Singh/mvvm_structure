@@ -5,8 +5,8 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lottie/lottie.dart';
-import 'package:rive/rive.dart';
+// import 'package:lottie/lottie.dart';
+// import 'package:rive/rive.dart';
 
 Widget assetSvg(String path,
         {BoxFit? fit,
@@ -15,30 +15,30 @@ Widget assetSvg(String path,
         double? width,
         double? height}) =>
     SvgPicture.asset(
-      fullPath ? path : 'assets/svg/$path',
+      fullPath ? path : 'assets/svgs/$path',
       fit: fit ?? BoxFit.contain,
       color: color,
       width: width,
       height: height,
     );
-Widget assetRive(String path, {BoxFit? fit, bool fullPath = false}) =>
-    RiveAnimation.asset(
-      fullPath ? path : 'assets/rive/$path',
-      fit: fit ?? BoxFit.contain,
-    );
-LottieBuilder assetLottie(String path,
-        {BoxFit? fit,
-        bool fullPath = false,
-        double? width,
-        double? height,
-        LottieDelegates? delegates}) =>
-    Lottie.asset(
-      fullPath ? path : 'assets/lottie/$path',
-      fit: fit ?? BoxFit.contain,
-      width: width,
-      height: height,
-      delegates: delegates,
-    );
+// Widget assetRive(String path, {BoxFit? fit, bool fullPath = false}) =>
+//     RiveAnimation.asset(
+//       fullPath ? path : 'assets/rive/$path',
+//       fit: fit ?? BoxFit.contain,
+//     );
+// LottieBuilder assetLottie(String path,
+//         {BoxFit? fit,
+//         bool fullPath = false,
+//         double? width,
+//         double? height,
+//         LottieDelegates? delegates}) =>
+//     Lottie.asset(
+//       fullPath ? path : 'assets/lottie/$path',
+//       fit: fit ?? BoxFit.contain,
+//       width: width,
+//       height: height,
+//       delegates: delegates,
+//     );
 
 Widget assetImages(String path,
         {BoxFit? fit,

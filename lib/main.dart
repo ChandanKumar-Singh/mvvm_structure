@@ -1,135 +1,87 @@
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '/utils/my_logger.dart';
-import 'screens/dashboard/view/basic_page.dart';
+import 'package:flutter/services.dart';
 
-void main() {
-  runApp(
-    DevicePreview(
-      enabled: true,
-      tools: const [
-        ...DevicePreview.defaultTools,
-        CustomPlugin(),
-      ],
-      builder: (context) => const BasicApp(),
-    ),
-  );
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import '/services/theme_services.dart';
+import '/services/translation.dart';
+import 'package:provider/provider.dart';
+
+import 'app/modules/main_binding.dart';
+import 'app/modules/page_not_found.dart';
+import 'app/routes/app_pages.dart';
+import 'services/device_preview_services.dart';
+
+var initTheme = ThemeService.instance.initial;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
+  await DevicePreviewService.instance.init();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(app());
+  });
 }
 
-class CustomPlugin extends StatelessWidget {
-  const CustomPlugin({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ToolPanelSection(
-      title: 'Custom',
-      children: [
-        ListTile(
-          title: const Text('Print in console'),
-          onTap: () {
-            // ignore: avoid_print
-            print('Hey, this is a custom plugin!');
-          },
-        )
-      ],
-    );
-  }
+Widget app() {
+  return MyApp(initTheme: initTheme);
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.initTheme});
+  final ThemeData initTheme;
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    primaryFocus?.unfocus();
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<DevicePreviewStore>(
+          create: (_) => DevicePreviewStore(
+              defaultDevice: Devices.ios.iPad,
+              storage: DevicePreviewStorage.preferences()),
+        ),
+      ],
+      child: ValueListenableBuilder(
+          valueListenable: devicePreviewEnabled,
+          builder: (context, value, child) {
+            return ThemeProvider(
+                initTheme: initTheme,
+                builder: (_, theme) {
+                  return DevicePreview(
+                      enabled: value,
+                      tools: const [
+                        ...DevicePreview.defaultTools,
+                      ],
+                      builder: (context) {
+                        return GetMaterialApp(
+                          builder: DevicePreview.appBuilder,
+                          initialBinding: MainBinding(),
+                          initialRoute: AppPages.initial,
+                          getPages: AppPages.routes,
+                          locale: Get.deviceLocale,
+                          fallbackLocale: const Locale('en', 'US'),
+                          translations: TranslationService(),
+                          unknownRoute: _unknownRoute(),
+                          debugShowCheckedModeBanner: false,
+                          theme: theme,
+                          themeMode: ThemeMode.dark,
+                        );
+                      });
+                });
+          }),
     );
   }
-}
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final int _counter = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => MyLogger.demo(),
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+  GetPage<dynamic> _unknownRoute() {
+    return GetPage(
+      name: Routes.pageNotFound,
+      page: () => const PageNotFound(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 300),
     );
   }
 }

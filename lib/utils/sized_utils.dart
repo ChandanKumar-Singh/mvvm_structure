@@ -22,11 +22,13 @@ Widget width100([double? width]) => SizedBox(width: width ?? 100);
 Size getSize(BuildContext context) => MediaQuery.of(context).size;
 double get getWidth => MediaQuery.of(Get.context!).size.width;
 double get getHeight => MediaQuery.of(Get.context!).size.height;
-ThemeData get getTheme => Theme.of(Get.context!);
+BuildContext get getContext => Get.context!;
+ThemeData getTheme([BuildContext? context]) =>
+    Theme.of(context ?? Get.context!);
 
 Widget space(double p) =>
     SizedBox(height: MediaQuery.of(Get.context!).size.height * p / 100);
 double perSize(double p) => MediaQuery.of(Get.context!).size.height * p / 100;
 
-double paddingDefault = 8;
-double spaceDefault = 16;
+double paddingDefault = Get.width * 0.03;
+double spaceDefault = Get.width * 0.03;

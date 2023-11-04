@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '/utils/sized_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// all [Global] size texts with fonts
 /// linkifyText Widget
 
 Text capText(
-  String text,
-  BuildContext context, {
+  String text, {
   TextAlign? textAlign,
   int? maxLines,
   TextOverflow? overflow,
@@ -32,21 +32,20 @@ Text capText(
       maxLines: maxLines ?? 3,
       style: GoogleFonts.ubuntu(
         textStyle: style ??
-            Theme.of(context).textTheme.bodySmall!.copyWith(
+            getTheme().textTheme.bodySmall!.copyWith(
                 fontWeight: fontWeight,
                 letterSpacing: letterSpacing,
-                color: (color ?? Theme.of(context).textTheme.bodyMedium!.color),
+                color: (color ?? getTheme().textTheme.bodySmall!.color),
                 fontSize: fontSize,
                 height: lineHeight,
-                fontFamily:
-                    Theme.of(context).textTheme.displayLarge?.fontFamily,
+                fontFamily: getTheme().textTheme.bodySmall?.fontFamily,
                 decoration: decoration)
           ..color?.withOpacity(opacity),
       ),
     );
 Text bodyMedText(
-  String text,
-  BuildContext context, {
+  String text, {
+  BuildContext? context,
   TextAlign? textAlign,
   int? maxLines,
   TextOverflow? overflow,
@@ -67,13 +66,13 @@ Text bodyMedText(
       maxLines: maxLines ?? 3,
       style: GoogleFonts.ubuntu(
         textStyle: style ??
-            Theme.of(context).textTheme.bodyMedium!.copyWith(
+            getTheme(context).textTheme.bodyMedium!.copyWith(
                 fontWeight: fontWeight,
                 letterSpacing: letterSpacing,
                 color: (color ??
                     (isButton != null
                         ? (isButton
-                            ? (Theme.of(context).brightness == Brightness.dark
+                            ? (getTheme().brightness == Brightness.dark
                                 ? Colors.white
                                 : Colors.black)
                             : null)
@@ -81,15 +80,13 @@ Text bodyMedText(
                 decorationColor: color,
                 fontSize: fontSize,
                 height: lineHeight,
-                fontFamily:
-                    Theme.of(context).textTheme.displayLarge?.fontFamily,
+                fontFamily: getTheme().textTheme.bodyMedium?.fontFamily,
                 decoration: decoration)
           ..color?.withOpacity(opacity),
       ),
     );
 Text bodyLargeText(
-  String text,
-  BuildContext context, {
+  String text, {
   TextAlign? textAlign,
   int? maxLines,
   TextOverflow? overflow,
@@ -110,13 +107,13 @@ Text bodyLargeText(
       maxLines: maxLines ?? 3,
       style: GoogleFonts.ubuntu(
         textStyle: style ??
-            Theme.of(context).textTheme.bodyLarge!.copyWith(
+            getTheme().textTheme.bodyLarge!.copyWith(
                 fontWeight: fontWeight ?? FontWeight.normal,
                 letterSpacing: letterSpacing,
                 color: (color ??
                     (isButton != null
                         ? (isButton
-                            ? (Theme.of(context).brightness == Brightness.dark
+                            ? (getTheme().brightness == Brightness.dark
                                 ? Colors.white
                                 : Colors.black)
                             : null)
@@ -124,15 +121,13 @@ Text bodyLargeText(
                 decorationColor: color,
                 fontSize: fontSize,
                 height: lineHeight,
-                fontFamily:
-                    Theme.of(context).textTheme.displayLarge?.fontFamily,
+                fontFamily: getTheme().textTheme.bodyLarge?.fontFamily,
                 decoration: decoration)
           ..color?.withOpacity(opacity),
       ),
     );
-Text titleLargeText(
-  String text,
-  BuildContext context, {
+Text titleMedText(
+  String text, {
   TextAlign? textAlign,
   int? maxLines,
   TextOverflow? overflow,
@@ -153,13 +148,13 @@ Text titleLargeText(
       maxLines: maxLines ?? 3,
       style: GoogleFonts.ubuntu(
         textStyle: style ??
-            Theme.of(context).textTheme.titleLarge!.copyWith(
+            getTheme().textTheme.titleMedium!.copyWith(
                 fontWeight: fontWeight ?? FontWeight.bold,
                 letterSpacing: letterSpacing,
                 color: (color ??
                     (isButton != null
                         ? (isButton
-                            ? (Theme.of(context).brightness == Brightness.dark
+                            ? (getTheme().brightness == Brightness.dark
                                 ? Colors.white
                                 : Colors.black)
                             : null)
@@ -167,14 +162,55 @@ Text titleLargeText(
                 decorationColor: color,
                 fontSize: fontSize,
                 height: lineHeight,
-                fontFamily: Theme.of(context).textTheme.bodySmall?.fontFamily,
+                fontFamily: getTheme().textTheme.titleMedium?.fontFamily,
                 decoration: decoration)
           ..color?.withOpacity(opacity),
       ),
     );
+Text titleLargeText(
+  String text, {
+  TextAlign? textAlign,
+  int? maxLines,
+  TextOverflow? overflow,
+  TextStyle? style,
+  Color? color,
+  bool? isButton,
+  double? fontSize = 18,
+  FontWeight? fontWeight,
+  double? letterSpacing,
+  double? lineHeight,
+  TextDecoration? decoration,
+  double opacity = 1,
+}) =>
+    Text(
+      text,
+      textAlign: textAlign,
+      overflow: overflow,
+      maxLines: maxLines ?? 3,
+      style: GoogleFonts.ubuntu(
+        textStyle: style ??
+            getTheme().textTheme.titleLarge!.copyWith(
+                fontWeight: fontWeight ?? FontWeight.bold,
+                letterSpacing: letterSpacing,
+                color: (color ??
+                    (isButton != null
+                        ? (isButton
+                            ? (getTheme().brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black)
+                            : null)
+                        : null)),
+                decorationColor: color,
+                fontSize: fontSize,
+                height: lineHeight,
+                fontFamily: getTheme().textTheme.titleLarge?.fontFamily,
+                decoration: decoration)
+          ..color?.withOpacity(opacity),
+      ),
+    );
+
 Text headLineText6(
-  String text,
-  BuildContext context, {
+  String text, {
   TextAlign? textAlign,
   int? maxLines,
   TextOverflow? overflow,
@@ -195,13 +231,13 @@ Text headLineText6(
       maxLines: maxLines ?? 3,
       style: GoogleFonts.ubuntu(
         textStyle: style ??
-            Theme.of(context).textTheme.displaySmall!.copyWith(
+            getTheme().textTheme.displaySmall!.copyWith(
                 fontWeight: fontWeight ?? FontWeight.bold,
                 letterSpacing: letterSpacing,
                 color: (color ??
                     (isButton != null
                         ? (isButton
-                            ? (Theme.of(context).brightness == Brightness.dark
+                            ? (getTheme().brightness == Brightness.dark
                                 ? Colors.white
                                 : Colors.black)
                             : null)
@@ -209,14 +245,13 @@ Text headLineText6(
                 decorationColor: color,
                 fontSize: fontSize,
                 height: lineHeight,
-                fontFamily: Theme.of(context).textTheme.bodySmall?.fontFamily,
+                fontFamily: getTheme().textTheme.displaySmall?.fontFamily,
                 decoration: decoration)
           ..color?.withOpacity(opacity),
       ),
     );
 Text displayMedium(
-  String text,
-  BuildContext context, {
+  String text, {
   TextAlign? textAlign,
   int? maxLines,
   TextOverflow? overflow,
@@ -237,13 +272,13 @@ Text displayMedium(
       maxLines: maxLines ?? 3,
       style: GoogleFonts.ubuntu(
         textStyle: style ??
-            Theme.of(context).textTheme.displayMedium!.copyWith(
+            getTheme().textTheme.displayMedium!.copyWith(
                 fontWeight: fontWeight ?? FontWeight.bold,
                 letterSpacing: letterSpacing,
                 color: (color ??
                     (isButton != null
                         ? (isButton
-                            ? (Theme.of(context).brightness == Brightness.dark
+                            ? (getTheme().brightness == Brightness.dark
                                 ? Colors.white
                                 : Colors.black)
                             : null)
@@ -251,14 +286,13 @@ Text displayMedium(
                 decorationColor: color,
                 fontSize: fontSize,
                 height: lineHeight,
-                fontFamily: Theme.of(context).textTheme.bodySmall?.fontFamily,
+                fontFamily: getTheme().textTheme.displayMedium?.fontFamily,
                 decoration: decoration)
           ..color?.withOpacity(opacity),
       ),
     );
 Text displayLarge(
-  String text,
-  BuildContext context, {
+  String text, {
   TextAlign? textAlign,
   int? maxLines,
   TextOverflow? overflow,
@@ -279,13 +313,13 @@ Text displayLarge(
       maxLines: maxLines ?? 3,
       style: GoogleFonts.ubuntu(
         textStyle: style ??
-            Theme.of(context).textTheme.displayLarge!.copyWith(
+            getTheme().textTheme.displayLarge!.copyWith(
                 fontWeight: fontWeight ?? FontWeight.bold,
                 letterSpacing: letterSpacing,
                 color: (color ??
                     (isButton != null
                         ? (isButton
-                            ? (Theme.of(context).brightness == Brightness.dark
+                            ? (getTheme().brightness == Brightness.dark
                                 ? Colors.white
                                 : Colors.black)
                             : null)
@@ -293,7 +327,7 @@ Text displayLarge(
                 decorationColor: color,
                 fontSize: fontSize,
                 height: lineHeight,
-                fontFamily: Theme.of(context).textTheme.bodySmall?.fontFamily,
+                fontFamily: getTheme().textTheme.displayLarge?.fontFamily,
                 decoration: decoration)
           ..color?.withOpacity(opacity),
       ),
